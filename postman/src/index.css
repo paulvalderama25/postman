@@ -12,7 +12,7 @@ code {
     monospace;
 }
 
-.current-results {
+.customer-title {
   float: left;
   margin-left: 50px;
 }
@@ -20,4 +20,10 @@ code {
 .previous-results {
   float: right;
   margin-right: 50px;
+}
+
+.result-list {
+  margin-top: 55px;
+  text-align: left;
+  margin-left: 30px;
 }
