@@ -1,8 +1,8 @@
 const {Client}=require('pg');
 const express = require("express");
 const cors = require('cors');
-
 const app = express();
+
 app.use(express.json());
 
 app.use(cors());
@@ -30,9 +30,6 @@ con.connect().then(() => console.log("connected"))
 
 app.post('/postData', (req, res) => {req
     const {name,email,id} = req.body
-
-    console.log(name, email, id, 'server data')
-
     const insert_query='INSERT INTO customers (name,email,id) VALUES ($1,$2,$3)'
 
     con.query(insert_query,[name,email,id], (err, result) => {
@@ -48,7 +45,6 @@ app.post('/postData', (req, res) => {req
 
 
 app.get("/fetchData", (req, res) => {
-
     const fetch_query = 'SELECT * FROM public.customers'
 
     con.query(fetch_query, (err, result)=> {
@@ -64,7 +60,6 @@ app.put('/update/:id', (req, res) => {
     const id = req.params.id;
     const name = req.body.name;
     const email = req.body.email;
-    // const {name,email,id} = req.body
 
     const update_query = "UPDATE customers SET name=$1,email=$2 WHERE id=$3"
 

@@ -8,10 +8,8 @@ function App() {
     const [customers, setCustomers] = useState([]);
     const [search, setSearch] = useState('');
     const [searchResults, setSearchResults] = useState([]);
-    const [displaySearh, setDisplaySearch] = useState([]);
     const [searchSubmitted, setSearchSubmitted] = useState(false);
     const [noResultFound, setNoResultFound] = useState(false);
-    // const [resultFound, setResultFound] = useState(false);
     const [editingCustomer, setEditingCustomer] = useState(false);
     const [editedCustomerDetails, setEditedCustomerDetails] = useState({})
     const [name, setName] = useState('');
@@ -23,7 +21,6 @@ function App() {
     const [loggedIn, setLoggedIn] = useState(false);
 
     function handleCallbackResponse(response) {
-
         var userObject = jwtDecode(response.credential);
         setLoggedIn(true);
         setUser(userObject);
@@ -46,10 +43,8 @@ function App() {
             document.getElementById("signInDiv"),
             {theme: "outline", size: "large"}
         );
-
         google.accounts.id.prompt();
     }, []);
-
 
     const handleNewCustomer = (e) => {
         e.preventDefault();
@@ -75,11 +70,6 @@ function App() {
         setName(name);
         setEmail(email);
         setId(id);
-        // setEditedCustomerDetails({
-        //     "name": name,
-        //     "email": email,
-        //     "id": id
-        // })
     }
 
     const deleteCustomer = (e, id) => {
@@ -127,29 +117,25 @@ function App() {
         setSearchResults([]);
         setNoResultFound(false);
     }
+
     function getCustomers() {
         fetch('/fetchData')
             .then(response => response.json())
             // .then(data => console.log(data))
             .then(data => {
-                console.log(data)
                 setCustomers(data)
             })
             .catch(error => console.error(error))
     }
 
     const handleChange = (event) => {
-
         setSearch(event.target.value);
         const filterCustomers = customers.filter((item) => {
             if (item.id === Number(event.target.value)){
-                // setResultFound(true);
-                console.log(item, 'item in handle')
                 return item;
             }
         });
         if(filterCustomers.length > 0){
-            console.log(filterCustomers, 'hitting filter')
             setSearchResults(filterCustomers[0]);
             setNoResultFound(false);
             setSearchSubmitted(true);
@@ -158,16 +144,11 @@ function App() {
             setSearchSubmitted(false);
             setNoResultFound(true);
         }
-        console.log(searchSubmitted,'search sub')
     }
 
     useEffect(() => {
         getCustomers();
     }, [editingCustomer, noResultFound]);
-
-    // useEffect(() => {
-    //     setDisplaySearch(searchResults)
-    // }, [searchResults])
 
     return (
     <div className="App">
@@ -233,7 +214,6 @@ function App() {
                 </div>
                 <div className='result-list'>
                     { searchSubmitted && !noResultFound ?
-                        // { searchSubmitted && !noResultFound && !editingCustomer ?
                         <ul>
                             <li key={"name"}>Name: {searchResults.name}</li>
                             <li key={'email'}>Email: {searchResults.email}</li>
@@ -246,7 +226,6 @@ function App() {
                                 onClick={(e) => {deleteCustomer(e, searchResults.id)}}
                             >delete</button>
                         </ul>
-
                         : noResultFound && searchSubmitted && !editingCustomer ?
                             <p>No Result Found</p>
                             : !searchSubmitted && !noResultFound &&  editingCustomer?
