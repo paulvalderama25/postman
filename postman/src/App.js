@@ -1,9 +1,10 @@
-import './App.css';
 import {useState, useEffect} from "react";
 import axios from 'axios';
+import { jwtDecode } from 'jwt-decode';
+
 
 function App() {
-
+    const [user, setUser] = useState({});
     const [customers, setCustomers] = useState([]);
     const [search, setSearch] = useState('');
     const [searchResults, setSearchResults] = useState([]);
@@ -19,6 +20,35 @@ function App() {
     const [newName, setNewName] = useState('');
     const [newEmail, setNewEmail] = useState('');
     const [newId, setNewId] = useState(null);
+    const [loggedIn, setLoggedIn] = useState(false);
+
+    function handleCallbackResponse(response) {
+
+        var userObject = jwtDecode(response.credential);
+        setLoggedIn(true);
+        setUser(userObject);
+        document.getElementById("signInDiv").hidden = true;
+    }
+
+    function handleSignOut(event) {
+        setUser({});
+        setLoggedIn(false);
+        document.getElementById("signInDiv").hidden = false;
+    }
+
+    useEffect(() => {
+        /* global google */
+        google.accounts.id.initialize({
+            client_id: "955568137419-b1hsm5gmouemhhr25s1l9op6hu8b8ajj.apps.googleusercontent.com",
+            callback: handleCallbackResponse
+        })
+        google.accounts.id.renderButton(
+            document.getElementById("signInDiv"),
+            {theme: "outline", size: "large"}
+        );
+
+        google.accounts.id.prompt();
+    }, []);
 
 
     const handleNewCustomer = (e) => {
@@ -141,93 +171,113 @@ function App() {
 
     return (
     <div className="App">
-        <p>Search for Customer by ID</p>
-        <div>
-          <input
-            type='text'
-            value={search}
-            onChange={handleChange}
-          />
-          <button
-            onClick={submitSearch}
-          >Submit</button>
-            <button
-                onClick={displayAllCustomers}
-            >Display All Customers
-            </button>
-        </div>
-        <div>
-            <p>Enter New Customer</p>
-            Name
-            <input
-                value={newName}
-                onChange={(e) => {setNewName(e.target.value)}}
-            />
-            Email
-            <input
-                value={newEmail}
-                onChange={(e) => {setNewEmail(e.target.value)}}
-            />
-            ID
-            <input
-                value={newId}
-                onChange={(e) => {setNewId(e.target.value)}}
-                placeholder={''}
-            />
-            <button
-                onClick={(e) => {handleNewCustomer(e)}}
-            >Submit New Customer</button>
-        </div>
-        <div>
-            {searchSubmitted ?
-                <p className="customer-title">Searched Customer</p>
-                :
-                <p className="customer-title">Customers</p>
-            }
-        </div>
-        <div className='result-list'>
-            { searchSubmitted && !noResultFound ?
-                // { searchSubmitted && !noResultFound && !editingCustomer ?
-                <ul>
-                    <li key={"name"}>Name: {searchResults.name}</li>
-                    <li key={'email'}>Email: {searchResults.email}</li>
-                    <li key={'id'}>ID: {searchResults.id}</li>
-                    <button
-                        onClick={() => {editCustomer(searchResults.id, searchResults.name, searchResults.email)}}
-                    >edit
-                    </button>
-                    <button
-                        onClick={(e) => {deleteCustomer(e, searchResults.id)}}
-                    >delete</button>
-                </ul>
+        <div id="signInDiv"></div>
+        { Object.keys(user).length != 0 &&
+            <button className="sign-out-btn" onClick={(e) => handleSignOut(e)}>Sign Out</button>
+        }
 
-                : noResultFound && searchSubmitted && !editingCustomer ?
-                    <p>No Result Found</p>
-                    : !searchSubmitted && !noResultFound &&  editingCustomer?
-                        <span>
-                            Name:
-                            <input
-                                value={name}
-                                onChange={e => setName(e.target.value)}
-                            />
-                            Email:
-                            <input
-                                value={email}
-                                onChange={e => setEmail(e.target.value)}
-                            />
+        {loggedIn ?
+            <div>
+                <div>
+                    <img alt={'No Image'} src={user.picture}></img>
+                    <h3>{user.name}</h3>
+                </div>
+
+                <p>Search for Customer by ID</p>
+                <div>
+                  <input
+                    type='text'
+                    value={search}
+                    onChange={handleChange}
+                  />
+                  <button
+                    onClick={submitSearch}
+                    style={{marginLeft:'5px', marginRight:'5px'}}
+                  >Submit</button>
+                    <button
+                        onClick={displayAllCustomers}
+                    >Display All Customers
+                    </button>
+                </div>
+                <div>
+                    <p>Enter New Customer</p>
+                    Name
+                    <input
+                        value={newName}
+                        onChange={(e) => {setNewName(e.target.value)}}
+                        style={{marginRight: '5px', marginLeft: '5px'}}
+                    />
+                    Email
+                    <input
+                        value={newEmail}
+                        onChange={(e) => {setNewEmail(e.target.value)}}
+                        style={{marginRight: '5px', marginLeft: '5px'}}
+                    />
+                    ID
+                    <input
+                        value={newId}
+                        onChange={(e) => {setNewId(e.target.value)}}
+                        placeholder={''}
+                        style={{marginRight: '5px', marginLeft: '5px'}}
+                    />
+                    <button
+                        onClick={(e) => {handleNewCustomer(e)}}
+                    >Submit New Customer</button>
+                </div>
+                <div>
+                    {searchSubmitted ?
+                        <p className="customer-title">Searched Customer</p>
+                        :
+                        <p className="customer-title" key={'customer'}>Customers</p>
+                    }
+                </div>
+                <div className='result-list'>
+                    { searchSubmitted && !noResultFound ?
+                        // { searchSubmitted && !noResultFound && !editingCustomer ?
+                        <ul>
+                            <li key={"name"}>Name: {searchResults.name}</li>
+                            <li key={'email'}>Email: {searchResults.email}</li>
+                            <li key={'id'}>ID: {searchResults.id}</li>
                             <button
-                                onClick={handleEditSubmit}
-                            >Submit Edit</button>
-                        </span>
-                : customers.map((item, index) => (
-                    <ul>
-                        <li key={"name"}>Name: {item.name}</li>
-                        <li key={'email'}>Email: {item.email}</li>
-                        <li key={'id'}>ID: {item.id}</li>
-                    </ul>
-                ))
-            }
-        </div>
+                                onClick={() => {editCustomer(searchResults.id, searchResults.name, searchResults.email)}}
+                            >edit
+                            </button>
+                            <button
+                                onClick={(e) => {deleteCustomer(e, searchResults.id)}}
+                            >delete</button>
+                        </ul>
+
+                        : noResultFound && searchSubmitted && !editingCustomer ?
+                            <p>No Result Found</p>
+                            : !searchSubmitted && !noResultFound &&  editingCustomer?
+                                <span>
+                                    Name:
+                                    <input
+                                        value={name}
+                                        onChange={e => setName(e.target.value)}
+                                    />
+                                    Email:
+                                    <input
+                                        value={email}
+                                        onChange={e => setEmail(e.target.value)}
+                                    />
+                                    <button
+                                        onClick={handleEditSubmit}
+                                    >Submit Edit</button>
+                                </span>
+                        : customers.map((item, index) => (
+                            <ul>
+                                <li key={"name"}>Name: {item.name}</li>
+                                <li key={'email'}>Email: {item.email}</li>
+                                <li key={'id'}>ID: {item.id}</li>
+                            </ul>
+                        ))
+
+                }
+                </div>
+            </div>
+            : <></>
+        }
     </div>
   );
 }
