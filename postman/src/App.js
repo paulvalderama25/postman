@@ -33,10 +33,18 @@ function App() {
         document.getElementById("signInDiv").hidden = false;
     }
 
+    let clientId = ''
+
+    if(!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
+        clientId = '214033801361-tqnct4f13f3tu6lcsdi6662b55v9ljo4.apps.googleusercontent.com';
+    } else {
+        clientId = '955568137419-b1hsm5gmouemhhr25s1l9op6hu8b8ajj.apps.googleusercontent.com';
+    }
+
     useEffect(() => {
         /* global google */
         google.accounts.id.initialize({
-            client_id: "955568137419-b1hsm5gmouemhhr25s1l9op6hu8b8ajj.apps.googleusercontent.com",
+            client_id: clientId,
             callback: handleCallbackResponse
         })
         google.accounts.id.renderButton(
