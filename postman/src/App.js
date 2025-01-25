@@ -47,6 +47,7 @@ function App() {
             client_id: clientId,
             callback: handleCallbackResponse
         })
+        console.log(clientId, 'client id should be 214')
         google.accounts.id.renderButton(
             document.getElementById("signInDiv"),
             {theme: "outline", size: "large"}
