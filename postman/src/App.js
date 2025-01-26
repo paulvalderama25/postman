@@ -170,8 +170,8 @@ function App() {
             <button className="sign-out-btn" onClick={(e) => handleSignOut(e)}>Sign Out</button>
         }
 
-        {/*{loggedIn ?*/}
-        { 1 ?
+        {loggedIn ?
+        {/*{ 1 ?*/}
             <div>
                 <div>
                     <img alt={'No Image'} src={user.picture}></img>
