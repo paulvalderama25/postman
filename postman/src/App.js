@@ -131,7 +131,8 @@ function App() {
     }
 
     function getCustomers() {
-        fetch('/fetchData')
+        // fetch('/fetchData')
+        fetch('http://ec2-13-57-245-92.us-west-1.compute.amazonaws.com/fetchData')
             .then(response => response.json())
             // .then(data => console.log(data))
             .then(data => {
