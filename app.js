@@ -16,11 +16,13 @@ app.use(function(req, res, next) {
 });
 
 app.use('/api', createProxyMiddleware({
-    target: 'http://localhost:8080/', //original url
+    // target: 'http://localhost:8080/', //original url
+    target: 'http://paulvpostman.click/', //original url
     changeOrigin: true,
     //secure: false,
     onProxyRes: function (proxyRes, req, res) {
         proxyRes.headers['Access-Control-Allow-Origin'] = '*';
+        proxyRes.headers['Access-Control-Allow-Headers'] = "Origin, X-Requested-With, Content-Type, Accept";
     }
 }))
 
@@ -47,11 +49,14 @@ if(!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
 // })
 
 const con=new Client({
-    host: "localhost",
+    // host: "localhost",
+    host: "paulvpostman",
     user: "postgres",
-    port: 5433,
+    // port: 5433,
+    port: 5432,
     password: "postgres25",
-    database: "postgres"
+    // database: "postgres"
+    database: "prodpostgres"
 })
 
 con.connect().then(() => console.log("connected"))
