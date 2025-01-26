@@ -18,6 +18,28 @@ app.use('/api', createProxyMiddleware({
     }
 }))
 
+let dbPort = ''
+let databasePSQL = ''
+let host = ''
+
+if(!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
+    dbPort = 5433
+    databasePSQL = 'postgres'
+    host = 'localhost'
+} else {
+    dbPort = 5432
+    databasePSQL = 'prodpostgres'
+    host = 'ec2-54-215-149-76.us-west-1.compute.amazonaws.com'
+}
+
+// const con=new Client({
+//     host: host,
+//     user: "postgres",
+//     port: dbPort,
+//     password: "postgres25",
+//     database: databasePSQL
+// })
+
 const con=new Client({
     host: "localhost",
     user: "postgres",

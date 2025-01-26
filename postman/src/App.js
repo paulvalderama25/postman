@@ -55,12 +55,14 @@ function App() {
         google.accounts.id.prompt();
     }, []);
 
+    // ec2-13-57-245-92.us-west-1.compute.amazonaws.com
     const handleNewCustomer = (e) => {
         e.preventDefault();
 
         axios({
             method: 'post',
-            url:'http://localhost:8080/postData',
+            // url:'http://localhost:8080/postData',
+            url:'http://ec2-13-57-245-92.us-west-1.compute.amazonaws.com',
             data:{
                 name: newName,
                 email: newEmail,
@@ -83,8 +85,8 @@ function App() {
 
     const deleteCustomer = (e, id) => {
         e.preventDefault();
-
-        axios.delete('http://localhost:8080/delete/' + id)
+        axios.delete('http://ec2-13-57-245-92.us-west-1.compute.amazonaws.com/delete/' + id)
+        // axios.delete('http://localhost:8080/delete/' + id)
             .then((res, err) => {
                 console.log(res)
         })
@@ -101,7 +103,8 @@ function App() {
 
     const handleEditSubmit = (e) => {
         e.preventDefault();
-        axios.put('http://localhost:8080/update/' + id, {name, email})
+        axios.put('http://ec2-13-57-245-92.us-west-1.compute.amazonaws.com/update/' + id, {name, email})
+        // axios.put('http://localhost:8080/update/' + id, {name, email})
             .then((res, err) => {
                 if(res.data) {
                     console.log('updated')
@@ -166,7 +169,8 @@ function App() {
             <button className="sign-out-btn" onClick={(e) => handleSignOut(e)}>Sign Out</button>
         }
 
-        {loggedIn ?
+        {/*{loggedIn ?*/}
+        { 1 ?
             <div>
                 <div>
                     <img alt={'No Image'} src={user.picture}></img>
