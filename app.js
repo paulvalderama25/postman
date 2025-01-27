@@ -1,3 +1,4 @@
+const pg = require('pg')
 const {Client}=require('pg');
 const express = require("express");
 const cors = require('cors');
@@ -19,28 +20,21 @@ app.use(cors());
 //     }
 // }))
 
-let dbPort = ''
-let databasePSQL = ''
-let host = ''
+const conString = "postgres://postgres:postgres25@database-1.crmysoeqi0c5.us-west-1.rds.amazonaws.com:5432/database-1"
 
-if(!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
-    dbPort = 5433
-    databasePSQL = 'postgres'
-    host = 'localhost'
-} 
-// else {
-//     dbPort = 5432
-//     databasePSQL = 'prodpostgres'
-//     host = 'ec2-54-215-149-76.us-west-1.compute.amazonaws.com'
-// }
+let con;
 
-const con=new Client({
-    host: host,
-    user: "postgres",
-    port: dbPort,
-    password: "postgres25",
-    database: databasePSQL
-})
+if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development'){
+    con = new Client({
+        host: 'localhost',
+        user: "postgres",
+        port: 5433,
+        password: "postgres25",
+        database: 'postgres'
+    })
+} else {
+    con = new pg.Client(conString);
+}
 
 con.connect().then(() => console.log("connected"))
 
