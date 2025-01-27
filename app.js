@@ -9,14 +9,14 @@ app.use(cors());
 
 const { createProxyMiddleware } = require('http-proxy-middleware');
 
-app.use('/api', createProxyMiddleware({
-    target: 'http://localhost:8080/', //original url
-    changeOrigin: true,
-    //secure: false,
-    onProxyRes: function (proxyRes, req, res) {
-        proxyRes.headers['Access-Control-Allow-Origin'] = '*';
-    }
-}))
+// app.use('/api', createProxyMiddleware({
+//     target: 'http://localhost:8080/', //original url
+//     changeOrigin: true,
+//     //secure: false,
+//     onProxyRes: function (proxyRes, req, res) {
+//         proxyRes.headers['Access-Control-Allow-Origin'] = '*';
+//     }
+// }))
 
 const con=new Client({
     host: "localhost",
@@ -85,7 +85,7 @@ app.delete('/delete/:id', (req,res)=>{
     })
 })
 
-const PORT = 8080;
+const PORT = process.env.PORT || 8080;
 
 app.listen(PORT,
     console.log(`Server started on port ${PORT}`)
