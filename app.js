@@ -7,24 +7,17 @@ app.use(express.json());
 
 app.use(cors());
 
-const { createProxyMiddleware } = require('http-proxy-middleware');
+// const { createProxyMiddleware } = require('http-proxy-middleware');
 
-// app.use(function(req, res, next) {
-//     res.header("Access-Control-Allow-Origin", "*");
-//     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-//     next();
-// });
-
-app.use('/api', createProxyMiddleware({
-    // target: 'http://localhost:8080/', //original url
-    target: 'http://paulvpostman.click/', //original url
-    changeOrigin: true,
-    //secure: false,
-    onProxyRes: function (proxyRes, req, res) {
-        proxyRes.headers['Access-Control-Allow-Origin'] = '*';
-        proxyRes.headers['Access-Control-Allow-Headers'] = "Origin, X-Requested-With, Content-Type, Accept";
-    }
-}))
+// app.use('/api', createProxyMiddleware({
+//     target: 'http://localhost:8080/', //original url
+//     changeOrigin: true,
+//     //secure: false,
+//     onProxyRes: function (proxyRes, req, res) {
+//         proxyRes.headers['Access-Control-Allow-Origin'] = '*';
+//         proxyRes.headers['Access-Control-Allow-Headers'] = "Origin, X-Requested-With, Content-Type, Accept";
+//     }
+// }))
 
 let dbPort = ''
 let databasePSQL = ''
@@ -34,29 +27,19 @@ if(!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
     dbPort = 5433
     databasePSQL = 'postgres'
     host = 'localhost'
-} else {
-    dbPort = 5432
-    databasePSQL = 'prodpostgres'
-    host = 'ec2-54-215-149-76.us-west-1.compute.amazonaws.com'
-}
-
-// const con=new Client({
-//     host: host,
-//     user: "postgres",
-//     port: dbPort,
-//     password: "postgres25",
-//     database: databasePSQL
-// })
+} 
+// else {
+//     dbPort = 5432
+//     databasePSQL = 'prodpostgres'
+//     host = 'ec2-54-215-149-76.us-west-1.compute.amazonaws.com'
+// }
 
 const con=new Client({
-    // host: "localhost",
-    host: "paulvpostman",
+    host: host,
     user: "postgres",
-    // port: 5433,
-    port: 5432,
+    port: dbPort,
     password: "postgres25",
-    // database: "postgres"
-    database: "prodpostgres"
+    database: databasePSQL
 })
 
 con.connect().then(() => console.log("connected"))
@@ -64,7 +47,6 @@ con.connect().then(() => console.log("connected"))
 app.post('/postData', (req, res) => {req
     const {name,email,id} = req.body
     const insert_query='INSERT INTO customers (name,email,id) VALUES ($1,$2,$3)'
-
     con.query(insert_query,[name,email,id], (err, result) => {
         if(err){
             res.send(err)
@@ -73,13 +55,10 @@ app.post('/postData', (req, res) => {req
             res.send("POSTED DATA")
         }
     })
-
 })
-
 
 app.get("/fetchData", (req, res) => {
     const fetch_query = 'SELECT * FROM public.customers'
-
     con.query(fetch_query, (err, result)=> {
         if(err){
             res.send(err)
@@ -93,9 +72,7 @@ app.put('/update/:id', (req, res) => {
     const id = req.params.id;
     const name = req.body.name;
     const email = req.body.email;
-
     const update_query = "UPDATE customers SET name=$1,email=$2 WHERE id=$3"
-
     con.query(update_query,[name, email, id],(err,result)=>{
         if(err){
             console.log(err, 'whats results')
@@ -118,8 +95,6 @@ app.delete('/delete/:id', (req,res)=>{
     })
 })
 
-const PORT =  process.env.PORT || 8080;
+const PORT = process.env.PORT || 8080;
 
-app.listen(PORT,
-    console.log(`Server started on port ${PORT}`)
-);
+app.listen(PORT, console.log(`Server started on port ${PORT}`));
