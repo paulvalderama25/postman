@@ -33,11 +33,11 @@
       email: postmantest25@gmail.com
       pw: postTest25
 
-    4. How to Use the Project
-       - Once you login with google, the database will load all of the customers and display them.
-       - You can search for a specific customer by ID, and it will only display that customer.
-       - You can then delete that customer or edit.
-       - Editing a customer will load an edit form where you can edit the customer details
-       - Submitting edit will send a put request to the backend, update the database, reload the customer list           with the new information
-       - If you're currently searching for a specific customer but don't wish to edit or delete, you can click           the 'Display All Customers' button          to display all the customers
-       - You can enter a new customer, submitting the new customer sends a post request to the backend, reloads          the customer list with the new              data included. 
+4. How to Use the Project
+    - Once you login with google, the database will load all of the customers and display them.
+    - You can search for a specific customer by ID, and it will only display that customer.
+    - You can then delete that customer or edit.
+    - Editing a customer will load an edit form where you can edit the customer details
+    - Submitting edit will send a put request to the backend, update the database, reload the customer list           with the new information
+    - If you're currently searching for a specific customer but don't wish to edit or delete, you can click           the 'Display All Customers' button          to display all the customers
+    - You can enter a new customer, submitting the new customer sends a post request to the backend, reloads          the customer list with the new              data included. 
