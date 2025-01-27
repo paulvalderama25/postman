@@ -51,7 +51,7 @@ function App() {
             {theme: "outline", size: "large"}
         );
         google.accounts.id.prompt();
-    }, []);
+    });
 
     useEffect(() => {
         getCustomers();
@@ -177,6 +177,7 @@ function App() {
                                     type='text'
                                     value={search}
                                     onChange={handleSearchChange}
+                                    style={{marginLeft: '5px'}}
                                 />
                             </label>
                             <label>
@@ -186,6 +187,7 @@ function App() {
                         </form>
                         <button
                             onClick={displayAllCustomers}
+                            style={{marginTop: '10px'}}
                         >Display All Customers
                         </button>
                     </div>
