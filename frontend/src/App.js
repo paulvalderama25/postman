@@ -19,6 +19,8 @@ function App() {
     const [searchSubmitted, setSearchSubmitted] = useState(false);
     const [user, setUser] = useState({});
 
+    const apiUrl = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_PROD_API_URL : process.env.REACT_APP_DEV_API_URL;
+
     const handleCallbackResponse = (response) => {
         var userObject = jwtDecode(response.credential);
         setLoggedIn(true);

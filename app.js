@@ -20,7 +20,11 @@ app.use(cors());
 //     }
 // }))
 
-const conString = "postgres://postgres:postgres25@database-1.crmysoeqi0c5.us-west-1.rds.amazonaws.com:5432/database-1"
+
+
+// const conString = "postgres://postgres:postgres25@database-1.crmysoeqi0c5.us-west-1.rds.amazonaws.com:5432/database-1"
+
+const conString = "postgresql://postgres:postgres25@127.0.0.1/my_app";
 
 let con;
 
@@ -28,9 +32,9 @@ if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development'){
     con = new Client({
         host: 'localhost',
         user: "postgres",
-        port: 5433,
+        port: 5432,
         password: "postgres25",
-        database: 'postgres'
+        database: 'my_app'
     })
 } else {
     con = new pg.Client(conString);
