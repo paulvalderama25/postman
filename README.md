@@ -6,7 +6,7 @@
 
  3. How to Install and Run the Project
 
-    Make a directory on your computer for the project
+    Open up a terminal, and make a directory on your computer for the project
       'mkdir postman-take-home'
 
     Clone the repository on github
