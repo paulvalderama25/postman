@@ -169,8 +169,8 @@ function App() {
                         <img alt={'Google User'} src={user.picture}></img>
                         <h3>{user.name}</h3>
                     </div>
-                    <div>
-                        <form onSubmit={submitSearch}>
+                    <div className='form-wrap'>
+                        <form onSubmit={submitSearch} className='form'>
                             <label>
                                 Search for Customer by ID
                                 <input
@@ -187,7 +187,7 @@ function App() {
                         </form>
                         <button
                             onClick={displayAllCustomers}
-                            style={{marginTop: '10px'}}
+                            className="display-customers"
                         >Display All Customers
                         </button>
                     </div>

@@ -21,6 +21,11 @@ code {
   margin-left: 50px;
 }
 
+.display-customers {
+  margin-top: 25px;
+  margin-bottom: 10px;
+}
+
 .previous-results {
   float: right;
   margin-right: 50px;
