@@ -42,7 +42,14 @@ if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development'){
         database: 'postgres'
     })
 } else {
-    con = new pg.Client(conString);
+    con = new Client({
+        host: 'database-1.crmysoeqi0c5.us-west-1.rds.amazonaws.com',
+        user: "postgres",
+        port: 5432,
+        password: "postgres25",
+        database: 'postgres',
+        ssl: true
+    })
 }
 
 con.connect().then(() => console.log("connected"))
