@@ -8,6 +8,11 @@ app.use(express.json());
 
 app.use(cors());
 
+// app.use(function(req, res, next) {
+//     res.setHeader("Content-Type", "application/json");
+//     // next();
+// });
+
 // const { createProxyMiddleware } = require('http-proxy-middleware');
 
 // app.use('/api', createProxyMiddleware({
@@ -32,9 +37,9 @@ if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development'){
     con = new Client({
         host: 'localhost',
         user: "postgres",
-        port: 5432,
+        port: 5433,
         password: "postgres25",
-        database: 'my_app'
+        database: 'postgres'
     })
 } else {
     con = new pg.Client(conString);
